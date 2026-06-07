@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>静读经藏</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="library" aria-label="经藏书架">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">静</div>
+          <div>
+            <h1>静读经藏</h1>
+            <p>每日一段，安住片刻</p>
+          </div>
+        </div>
+
+        <label class="search-field" for="sutraSearch">
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="m21 21-4.35-4.35m1.35-5.15a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z" /></svg>
+          </span>
+          <input id="sutraSearch" type="search" placeholder="搜索经名或关键词" autocomplete="off" />
+        </label>
+
+        <div class="library-header">
+          <span>经文</span>
+          <span id="sutraCount"></span>
+        </div>
+        <nav id="sutraList" class="sutra-list" aria-label="佛经列表"></nav>
+
+        <div class="today-panel">
+          <span class="panel-label">今日</span>
+          <strong id="todayTitle">心经</strong>
+          <p id="todayLine">观自在菩萨，行深般若波罗蜜多时。</p>
+          <button id="readTodayButton" class="text-button" type="button">读今日一段</button>
+        </div>
+
+        <section class="study-panel" aria-label="学习详解">
+          <div class="library-header">
+            <span>学习详解</span>
+            <span>点开看</span>
+          </div>
+          <nav id="detailList" class="detail-list" aria-label="详解列表"></nav>
+        </section>
+      </aside>
+
+      <main class="reader">
+        <header class="reader-top">
+          <div>
+            <p id="sutraMeta" class="sutra-meta">般若部</p>
+            <h2 id="sutraTitle">般若波罗蜜多心经</h2>
+          </div>
+          <div class="toolbar" aria-label="阅读设置">
+            <button id="fontMinus" class="icon-button" type="button" aria-label="减小字号" title="减小字号">
+              <svg viewBox="0 0 24 24"><path d="M5 12h14" /></svg>
+            </button>
+            <button id="fontPlus" class="icon-button" type="button" aria-label="增大字号" title="增大字号">
+              <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
+            </button>
+            <button id="themeToggle" class="icon-button" type="button" aria-label="切换明暗" title="切换明暗">
+              <svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 7.5A9 9 0 1 1 12 3Z" /></svg>
+            </button>
+            <button id="focusToggle" class="icon-button" type="button" aria-label="专注模式" title="专注模式">
+              <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m8 0h3a2 2 0 0 0 2-2v-3" /></svg>
+            </button>
+          </div>
+        </header>
+
+        <section class="chapter-strip" aria-label="章节导航">
+          <button id="prevSection" class="icon-button" type="button" aria-label="上一段" title="上一段">
+            <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></svg>
+          </button>
+          <div>
+            <span id="sectionName">全经</span>
+            <div class="progress-track" aria-hidden="true"><span id="progressBar"></span></div>
+          </div>
+          <button id="nextSection" class="icon-button" type="button" aria-label="下一段" title="下一段">
+            <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></svg>
+          </button>
+        </section>
+
+        <article id="sutraContent" class="sutra-content" tabindex="0"></article>
+      </main>
+
+      <aside class="notes" aria-label="札记与进度">
+        <section class="quiet-panel">
+          <div class="panel-heading">
+            <span>进度</span>
+            <button id="completeButton" class="primary-button" type="button">诵读完成</button>
+          </div>
+          <div class="progress-summary">
+            <div>
+              <strong id="streakDays">0</strong>
+              <span>连续天数</span>
+            </div>
+            <div>
+              <strong id="readCount">0</strong>
+              <span>完成次数</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="quiet-panel info-panel">
+          <div class="panel-heading">
+            <span>用途</span>
+          </div>
+          <h3 id="purposeTitle">传统用途</h3>
+          <p id="purposeText"></p>
+        </section>
+
+        <section class="quiet-panel info-panel">
+          <div class="panel-heading">
+            <span>简释</span>
+          </div>
+          <h3 id="explanationTitle">内容简释</h3>
+          <p id="explanationText"></p>
+        </section>
+
+        <section class="quiet-panel">
+          <div class="panel-heading">
+            <span>收藏</span>
+            <button id="bookmarkButton" class="icon-button" type="button" aria-label="收藏当前段落" title="收藏当前段落">
+              <svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v18l-7-4-7 4V4a1 1 0 0 1 1-1Z" /></svg>
+            </button>
+          </div>
+          <div id="bookmarkList" class="bookmark-list"></div>
+        </section>
+
+        <section class="quiet-panel note-panel">
+          <label for="noteText">今日札记</label>
+          <textarea id="noteText" rows="8" placeholder="可写下今天读到的一句、一个念头。"></textarea>
+          <p id="saveState" class="save-state">自动保存</p>
+        </section>
+      </aside>
+    </div>
+
+    <script src="./sutras.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

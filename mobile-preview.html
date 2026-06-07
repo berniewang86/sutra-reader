@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>静读经藏 · 手机预览</title>
+    <style>
+      :root {
+        --bg: #eef1eb;
+        --ink: #241f18;
+        --muted: #6f756d;
+        --line: #dfe5dc;
+        --paper: #fffefa;
+        --accent: #6f7f4f;
+        --shadow: 0 24px 70px rgba(35, 45, 29, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 16px 16px, rgba(111, 127, 79, 0.06) 1px, transparent 1px),
+          var(--bg);
+        background-size: 34px 34px;
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      }
+
+      .preview-shell {
+        display: grid;
+        grid-template-columns: minmax(260px, 380px) minmax(0, 1fr);
+        gap: clamp(20px, 5vw, 72px);
+        align-items: center;
+        min-height: 100vh;
+        width: min(1120px, 100%);
+        margin: 0 auto;
+        padding: clamp(18px, 4vw, 44px);
+      }
+
+      .preview-copy h1 {
+        margin: 0;
+        font-size: clamp(28px, 4vw, 44px);
+        line-height: 1.15;
+        font-weight: 700;
+      }
+
+      .preview-copy p {
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.8;
+      }
+
+      .device-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 24px;
+      }
+
+      .device-controls button,
+      .open-link {
+        min-height: 40px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0 12px;
+        color: var(--ink);
+        background: var(--paper);
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .device-controls button.active {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: #edf1e5;
+      }
+
+      .open-link {
+        display: inline-flex;
+        align-items: center;
+        margin-top: 12px;
+        text-decoration: none;
+      }
+
+      .phone-wrap {
+        display: grid;
+        justify-content: center;
+      }
+
+      .phone {
+        width: var(--phone-width, 390px);
+        height: var(--phone-height, 844px);
+        max-width: min(100vw - 36px, var(--phone-width, 390px));
+        max-height: calc(100vh - 36px);
+        padding: 12px;
+        border: 1px solid #242821;
+        border-radius: 34px;
+        background: #171a15;
+        box-shadow: var(--shadow);
+      }
+
+      .screen {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 24px;
+        background: var(--paper);
+      }
+
+      .screen::before {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        z-index: 2;
+        width: 86px;
+        height: 20px;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background: #171a15;
+      }
+
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        background: var(--paper);
+      }
+
+      @media (max-width: 900px) {
+        .preview-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .preview-copy {
+          max-width: 620px;
+        }
+
+        .phone {
+          max-height: 72vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="preview-shell">
+      <section class="preview-copy">
+        <h1>手机预览</h1>
+        <p>这里用手机尺寸打开独立手机版。你可以切换不同机型宽度，看读经、经库、详解和我的四个入口在小屏幕上的效果。</p>
+        <div class="device-controls" aria-label="选择预览尺寸">
+          <button class="active" type="button" data-size="390x844">iPhone 15</button>
+          <button type="button" data-size="375x667">iPhone SE</button>
+          <button type="button" data-size="412x915">Android</button>
+        </div>
+        <a class="open-link" href="./mobile.html">打开手机版</a>
+        <a class="open-link" href="./index.html">打开网页版</a>
+      </section>
+
+      <section class="phone-wrap" aria-label="手机外框预览">
+        <div id="phone" class="phone">
+          <div class="screen">
+            <iframe title="静读经藏手机版预览" src="./mobile.html"></iframe>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const phone = document.querySelector("#phone");
+      const buttons = document.querySelectorAll("[data-size]");
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const [width, height] = button.dataset.size.split("x");
+          phone.style.setProperty("--phone-width", `${width}px`);
+          phone.style.setProperty("--phone-height", `${height}px`);
+          buttons.forEach((item) => item.classList.toggle("active", item === button));
+        });
+      });
+    </script>
+  </body>
+</html>
